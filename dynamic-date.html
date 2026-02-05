@@ -7,45 +7,52 @@
   body {
     font-family: Arial, sans-serif;
     text-align: center;
-    font-size: 20px;
+    font-size: 24px;
     margin: 0;
-    padding: 10px;
+    padding: 20px;
   }
   .gregorian {
     text-transform: uppercase;
     font-weight: bold;
     color: #2c8fff; /* Blue color */
+    display: block;
+    margin-bottom: 10px;
+    font-size: 28px;
   }
   .hijri {
     text-transform: uppercase;
     font-style: italic;
-    color: #ff5722; /* Orange color */
+    color: #003366; /* Dark blue color */
+    display: block;
+    font-size: 24px;
   }
 </style>
 </head>
 <body>
 
-<div id="date-container"></div>
+<div id="date-container">
+  <span class="gregorian">Loading...</span>
+  <span class="hijri">Loading...</span>
+</div>
 
 <script>
-// Malay Hijri month names (all uppercase)
+// Malay Hijri month names (uppercase)
 const hijriMonths = [
   "MUHARAM", "SAFAR", "RABI'UL AWAL", "RABI'UL AKHIR", 
   "JAMADIL AWAL", "JAMADIL AKHIR", "REJAB", "SYA'BAN", 
   "RAMADHAN", "SYAWAL", "ZULKAEDAH", "ZULHIJJAH"
 ];
 
-// 1️⃣ Get today's Gregorian date
+// Get today's Gregorian date
 const today = new Date();
 const gregorianOptions = { day: '2-digit', month: 'short', year: 'numeric' };
 const gregorian = today.toLocaleDateString('en-GB', gregorianOptions).toUpperCase();
 
-// 2️⃣ Convert to Hijri date using Intl API
+// Convert to Hijri date using Intl API
 const hijriParts = new Intl.DateTimeFormat('en-TN-u-ca-islamic', { 
   day: 'numeric', month: 'numeric', year: 'numeric' 
 }).formatToParts(today);
 
-// Extract Hijri day, month, year
 let hijriDay, hijriMonth, hijriYear;
 hijriParts.forEach(part => {
   if(part.type === "day") hijriDay = part.value;
@@ -53,12 +60,12 @@ hijriParts.forEach(part => {
   if(part.type === "year") hijriYear = part.value;
 });
 
-// 3️⃣ Build Malay Hijri date string
+// Build Malay Hijri date string
 const hijriMalay = `${hijriDay} ${hijriMonths[hijriMonth]} ${hijriYear}H`;
 
-// 4️⃣ Display both dates
+// Display both dates
 document.getElementById("date-container").innerHTML = `
-  <span class="gregorian">${gregorian}</span> | 
+  <span class="gregorian">${gregorian}</span>
   <span class="hijri">${hijriMalay}</span>
 `;
 </script>
